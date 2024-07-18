@@ -11,6 +11,8 @@ class Posts {
 
     private $like;
 
+    private $sCategorieId;
+
     public function setTitre($titre) {
         $this->titre = $titre;
     }
@@ -49,5 +51,13 @@ class Posts {
 
     public function getLike() {
         return $this->like;
+    }
+
+    public function setsCategorieId($sCategorieId) {
+        $this->sCategorieId = $sCategorieId;
+    }
+
+    public function getsCategorieId() {
+        return $this->sCategorieId;
     }
 }

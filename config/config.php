@@ -3,6 +3,8 @@
 
 include ("users.php");
 include ("posts.php");
+include ("categorie.php");
+include ("sous_categorie.php");
 
 class bdd
 {
@@ -32,6 +34,29 @@ class bdd
 
         $done = $this->bdd->query($sql);
 
+        return $done->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllPosts()
+    {
+        $sql = "SELECT * FROM posts";
+
+        $done = $this->bdd->query($sql);
+
+        return $done->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllCategorie()
+    {
+        $sql = "SELECT * FROM catégorie";
+        $done = $this->bdd->query($sql);
+        return $done->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllSousCategorie()
+    {
+        $sql = "SELECT * FROM sous_categorie";
+        $done = $this->bdd->query($sql);
         return $done->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -66,26 +91,27 @@ class bdd
         $this->bdd = null;
     }
 
-    public function getAllPosts()
-    {
-
-        $sql = "SELECT * FROM posts";
-
-        $done = $this->bdd->query($sql);
-
-        return $done->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function addPost(Posts $post): void {
         $titre = $post->getTitre();
         $author = $post->getAuthor();
         $text = $post->getText();
+        $sCategorieId = $post->getsCategorieId();
 
-        $sql = $this->bdd->prepare("INSERT INTO posts (titre, author, text) VALUES (:titre, :author, :text)");
+        $sql = $this->bdd->prepare("INSERT INTO posts (titre, souscategorie_id, author, `text`) VALUES (:titre, :souscategorie_id :author, :txt)");
         $sql->bindParam(":titre", $titre);
         $sql->bindParam(":author", $author);
-        $sql->bindParam(":text", $text);
+        $sql->bindParam(":txt", $text);
+        $sql->bindParam(":souscategorie_id", $sCategorieId);
         $sql->execute();
     }
 
+    public function insert($image) {
+
+        $id = $_SESSION["user"]["id_user"];
+        $avatar = "./ressources/uploads/".$image["name"];
+
+        $sql = ("UPDATE users SET avatar='$avatar' WHERE id_user='$id'");
+        $exe = $this->bdd->prepare($sql);
+        $exe->execute();
+    }
 }

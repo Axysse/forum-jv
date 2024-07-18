@@ -1,8 +1,20 @@
-
-
 <section class="flex items-center gap-5 pl-10">
   <article><img class="h-20 w-20" src="ressources/Logo_forum.png" /></article>
-  <article><h2>Blogature</h2></article>
+  <article>
+    <h2>Blogature</h2>
+  </article>
+  <?php if (isset($_SESSION["user"])) { ?>
+    <article>
+      <p>Il est trop fort, c'est <?php echo $_SESSION["user"]["pseudo"] ?> bien sûr! </p>
+    </article>
+  <?php } ?>
+  <?php if (isset($_SESSION["user"])) { ?>
+  <?php if (!isset($_SESSION["user"]["avatar"])) { ?>
+    <img class="h-12 w-18" src="ressources/GiantST.webp" alt="placeholder image profil">
+  <?php } else { ?>
+    <img class="h-12 w-18" src="<?php echo $_SESSION["user"]["avatar"] ?>">
+  <?php } ?>
+  <?php } ?>
 </section>
 <section class="flex pr-10">
   <ul class="flex flex-row gap-5">
