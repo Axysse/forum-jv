@@ -56,7 +56,7 @@ if(isset($_POST["envoi_reponse"])) {
         <section>
             <?php foreach ($posts as $post) {
                 if ($post["id_posts"] == $id) { ?>
-                    <section class="mt-10 flex flex-row border-4 p-5 ">
+                    <section class="mt-10 flex flex-row border-4 p-5 bg-blue-300 ">
                         <article class="flex flex-col gap-5 items-center pr-16 border-r-2">
                             <?php foreach ($users as $user) {
                                 if ($post["author"] == $user["id_user"]) { ?>
@@ -83,7 +83,7 @@ if(isset($_POST["envoi_reponse"])) {
             <section>
                 <?php foreach($answers as $answer) {
                     if($answer["post_id"] == $id) { ?>
-                        <section class="mt-10 flex flex-row border-4 p-5 ">
+                        <section class="mt-10 flex flex-row border-4 p-5 bg-blue-200 ">
                             <article class="flex flex-col gap-5 items-center pr-16 border-r-2">
                             <?php foreach ($users as $user) {
                                     if ($answer["author"] == $user["id_user"]) { ?>

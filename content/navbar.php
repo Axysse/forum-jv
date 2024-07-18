@@ -21,9 +21,11 @@
 </section>
 <section class="flex pr-10">
   <ul class="flex flex-row gap-5">
-    <?php if($_SESSION["user"]["admin"] == 1) { ?>
-      <li><a href="admin.php">Le grand et puissant Admin !</a></li>
-    <?php } ?>
+    <?php if(isset($_SESSION["user"]["admin"]) == 1) { ?>
+      <li><a href="admin.php">Le grand et puissant ADMIN !</a></li>
+    <?php } else {
+      print "Nous, on aime les cookies!";
+    } ?>
     <li><a href="index.php">Accueil</a></li>
     <li><a href="profil.php">Profil</a></li>
     <li><a href="deconnexion.php">Déconnexion</a></li>

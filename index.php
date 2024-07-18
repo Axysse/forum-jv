@@ -183,7 +183,7 @@ if (isset($_POST["envoi_post"])) {
             if (isset($id)) {
                 foreach ($posts as $post) {
                     if ($post['souscategorie_id'] == $id) { ?>
-                        <section class="mt-10 flex flex-row border-4 p-5 ">
+                        <section class="mt-10 flex flex-row border-4 p-5 bg-blue-300 ">
                             <article class="flex flex-col gap-5 items-center pr-16 border-r-2">
                                 <?php foreach ($users as $user) {
                                     if ($post["author"] == $user["id_user"]) { ?>
@@ -201,8 +201,8 @@ if (isset($_POST["envoi_post"])) {
                                     <p><?php echo $post['text'] ?> </p>
                                 </div>
                             </article>
-                            <form action="reponse.php" method="get">
-                                <button class="border-2 border-black bg-red-200 h-fit" type="submit" name="response" value = <?php echo $post['id_posts'] ?> >Répondre</button>
+                            <form  action="reponse.php" method="get">
+                                <button class="border-2 border-black bg-orange-500 h-fit text-white" type="submit" name="response" value = <?php echo $post['id_posts'] ?> >Répondre</button>
                             </form>
                         <?php } ?>
                     </section>

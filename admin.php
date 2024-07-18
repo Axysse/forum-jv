@@ -4,6 +4,10 @@ session_start();
 $bdd = new Bdd();
 $bdd->connect();
 
+if($_SESSION["user"]["admin"] != 1){
+    header("location: index.php");
+}
+
 ?>
 
 
