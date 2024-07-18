@@ -4,14 +4,21 @@ session_start();
 $bdd = new Bdd();
 $bdd->connect();
 
+
+$time = date('d/m/Y h:i:s');
 $id = $_GET['id'];
-var_dump($id);
+// $idP = $_GET['idP'];
+
+
+// var_dump($id);
 $posts = $bdd->getAllPosts();
-var_dump($posts);
+// var_dump($posts);
+// var_dump($_SESSION["user"]["id_user"]);
 
 $users = $bdd->getAllUsers();
 $categorie = $bdd->getAllCategorie();
 $sousCategorie = $bdd->getAllSousCategorie();
+$posts = $bdd->getAllPosts();
 
 // var_dump($categorie);
 // var_dump($sousCategorie);
@@ -28,6 +35,7 @@ if (isset($_POST["submit_inscr"])) {
     $newUser->setMail($mail);
 
     $bdd->addUser($newUser);
+    header("location:index.php");
 }
 
 if (isset($_POST["submit_con"])) {
@@ -41,6 +49,7 @@ if (isset($_POST["submit_con"])) {
             $_SESSION['user'] = $user;
             $message = null;
             print "Bienvenue " . $user["pseudo"];
+            header("location:index.php");
         } else {
             print "C'est pas bon";
         }
@@ -50,22 +59,28 @@ if (isset($_POST["submit_con"])) {
 }
 
 
-if(isset($_POST["envoi_post"])) {
+if (isset($_POST["envoi_post"])) {
     $titre = $_POST["title"];
     $text = $_POST["post"];
     $author = $_SESSION["user"]["id_user"];
     $sCategorieId = $id;
+    $date = $time;
+    $like = 0;
 
     $newPost = new Posts;
     $newPost->setTitre($titre);
     $newPost->setText($text);
     $newPost->setAuthor($author);
     $newPost->setsCategorieId($sCategorieId);
+    $newPost->setTime($date);
+    $newPost->setLike($like);
+
 
     $bdd->addPost($newPost);
+    header("location:index.php");
 }
 
-// var_dump($user);
+// var_dump($_SESSION);
 
 ?>
 
@@ -140,24 +155,65 @@ if(isset($_POST["envoi_post"])) {
         <section class="flex flex-col justify-center items-center items-center">
             <?php foreach ($categorie as $catégories) { ?>
                 <article class="w-[75%] bg-blue-400 px-1 pl-5 py-1 border-b-2 border-gray-400">
-                <?php print $catégories["nom"]; ?>
+                    <?php print $catégories["nom"]; ?>
                 </article>
                 <?php foreach ($sousCategorie as $sousCategories) {
                     if ($sousCategories["categorie_id"] == $catégories["id_categorie"]) { ?>
-                    <article class="w-[75%] bg-blue-200 px-1 pl-10 py-1 border-b-1 border-gray-400 flex flex-row justify-between">
-                        <div>
-                      <a href="index.php?id=<?php echo $sousCategories["id_souscategorie"]?>"><?php  print $sousCategories["name"]; ?></a>
-                      </div>
-                      <div class="pr-24 border-l-2 pl-5 border-gray-400 flex flex-row gap-2">
-                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9l.3-.5z"/></svg>
-                            <!-- nbr posts -->
-                             <p>272 500 831</p>
-                      </div>
-                      </article>
-                    <?php  }
+                        <article
+                            class="w-[75%] bg-blue-200 px-1 pl-10 py-1 border-b-1 border-gray-400 flex flex-row justify-between">
+                            <div>
+                                <a
+                                    href="index.php?id=<?php echo $sousCategories["id_souscategorie"] ?>"><?php print $sousCategories["name"]; ?></a>
+                            </div>
+                            <div class="pr-24 border-l-2 pl-5 border-gray-400 flex flex-row gap-2">
+                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path
+                                        d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9l.3-.5z" />
+                                </svg>
+                                <!-- nbr posts -->
+                                <p>272 500 831</p>
+                            </div>
+                        </article>
+                    <?php }
                 }
             } ?>
-            </section>
+
+            <?php
+            if (isset($id)) {
+                foreach ($posts as $post) {
+                    if ($post['souscategorie_id'] == $id) { ?>
+                        <section class="mt-10 flex flex-row border-4 p-5 ">
+                            <article class="flex flex-col gap-5 items-center pr-16 border-r-2">
+                                <?php foreach ($users as $user) {
+                                    if ($post["author"] == $user["id_user"]) { ?>
+                                        <img class="h-24 w-32" src="<?php echo $user["avatar"] ?>">
+                                        <p><?php echo $user["pseudo"] ?></p>
+                                    <?php }
+                                } ?>
+                            </article>
+                            <p> <?php echo $post["date"] ?></p>
+                            <article class="flex flex-col justify-center items-center gap-5 pl-5 w-full">
+                                <div class="border-b-2 pb-2">
+                                    <p><?php echo $post['titre'] ?> </p>
+                                </div>
+                                <div>
+                                    <p><?php echo $post['text'] ?> </p>
+                                </div>
+                            </article>
+                            <form action="reponse.php" method="get">
+                                <button class="border-2 border-black bg-red-200 h-fit" type="submit" name="response" value = <?php echo $post['id_posts'] ?> >Répondre</button>
+                            </form>
+                        <?php } ?>
+                    </section>
+                    <?php
+                }
+            }
+            ?>
+                <?php if(isset($idP)){
+                    var_dump($idP);
+                    }?>
+        </section>
         <?php if (isset($_SESSION["user"]) && (isset($id))) { ?>
             <section class="flex flex-col justify-center items-center py-5">
                 <h3>Nouveau Topic:</h3>

@@ -5,6 +5,7 @@ include ("users.php");
 include ("posts.php");
 include ("categorie.php");
 include ("sous_categorie.php");
+include ("answer.php");
 
 class bdd
 {
@@ -60,6 +61,13 @@ class bdd
         return $done->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function gatAllAnswer()
+    {
+        $sql = "SELECT * FROM response";
+        $done = $this->bdd->query($sql);
+        return $done->fetchAll(PDO::FETCH_ASSOC); 
+    }
+
     public function addUser(Users $user): void
     {
 
@@ -91,17 +99,36 @@ class bdd
         $this->bdd = null;
     }
 
-    public function addPost(Posts $post): void {
+    public function addPost(Posts $post) {
         $titre = $post->getTitre();
         $author = $post->getAuthor();
         $text = $post->getText();
         $sCategorieId = $post->getsCategorieId();
+        $time= $post->getTime();
+        $like= $post->getLike();
 
-        $sql = $this->bdd->prepare("INSERT INTO posts (titre, souscategorie_id, author, `text`) VALUES (:titre, :souscategorie_id :author, :txt)");
+
+        $sql = $this->bdd->prepare("INSERT INTO posts (titre, souscategorie_id, author, `text`, `date`, `like`) VALUES (:titre, :souscategorie_id, :author, :text, :date, :like)");
         $sql->bindParam(":titre", $titre);
         $sql->bindParam(":author", $author);
-        $sql->bindParam(":txt", $text);
+        $sql->bindParam(":text", $text);
         $sql->bindParam(":souscategorie_id", $sCategorieId);
+        $sql->bindParam(":date", $time);
+        $sql->bindParam(":like", $like);
+        $sql->execute();
+    }
+
+    public function addRep(Answer $answer ) {
+        $author = $answer->getAuthor();
+        $text = $answer->getText();
+        $date = $answer->getDate();
+        $post_id = $answer->getPostId();
+
+        $sql = $this->bdd->prepare("INSERT INTO response (author, text, date, post_id) VALUES (:author, :text, :date, :post_id)");
+        $sql->bindParam(":author", $author);
+        $sql->bindParam(":text", $text);
+        $sql->bindParam(":date", $date);
+        $sql->bindParam(":post_id", $post_id);
         $sql->execute();
     }
 

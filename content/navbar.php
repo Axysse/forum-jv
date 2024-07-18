@@ -3,6 +3,9 @@
   <article>
     <h2>Blogature</h2>
   </article>
+  <article>
+  <?php echo date('d/m/Y h:i:s') ?>
+  </article>
   <?php if (isset($_SESSION["user"])) { ?>
     <article>
       <p>Il est trop fort, c'est <?php echo $_SESSION["user"]["pseudo"] ?> bien sûr! </p>
@@ -18,6 +21,9 @@
 </section>
 <section class="flex pr-10">
   <ul class="flex flex-row gap-5">
+    <?php if($_SESSION["user"]["admin"] == 1) { ?>
+      <li><a href="admin.php">Le grand et puissant Admin !</a></li>
+    <?php } ?>
     <li><a href="index.php">Accueil</a></li>
     <li><a href="profil.php">Profil</a></li>
     <li><a href="deconnexion.php">Déconnexion</a></li>

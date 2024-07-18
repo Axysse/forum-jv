@@ -7,11 +7,13 @@ class Posts {
 
     private $text;
 
-    private $date;
-
     private $like;
 
     private $sCategorieId;
+
+    private $time;
+
+    
 
     public function setTitre($titre) {
         $this->titre = $titre;
@@ -37,14 +39,6 @@ class Posts {
         return $this->text;
     }
 
-    public function setDate($date) {
-        $this->date = $date;
-    }
-
-    public function getDate() {
-        return $this->date;
-    }
-
     public function setLike($like) {
         $this->like = $like;
     }
@@ -60,4 +54,13 @@ class Posts {
     public function getsCategorieId() {
         return $this->sCategorieId;
     }
+
+    public function setTime($time) {
+        $this->time = $time;
+    }
+
+    public function getTime() {   
+        return $this->time;    
+    }
+
 }
