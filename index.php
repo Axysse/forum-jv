@@ -183,7 +183,7 @@ if (isset($_POST["envoi_post"])) {
             if (isset($id)) {
                 foreach ($posts as $post) {
                     if ($post['souscategorie_id'] == $id) { ?>
-                        <section class="mt-10 flex flex-row border-4 p-5 bg-blue-300 ">
+                        <section class="mt-10 flex flex-row border-4 p-5 bg-blue-300 rounded-lg ">
                             <article class="flex flex-col gap-5 items-center pr-16 border-r-2">
                                 <?php foreach ($users as $user) {
                                     if ($post["author"] == $user["id_user"]) { ?>

@@ -14,7 +14,9 @@ $answers = $bdd->gatAllAnswer();
 
 $id = $_GET['response'];
 
+
 var_dump($id);
+
 
 // var_dump($_GET);
 
@@ -56,7 +58,7 @@ if(isset($_POST["envoi_reponse"])) {
         <section>
             <?php foreach ($posts as $post) {
                 if ($post["id_posts"] == $id) { ?>
-                    <section class="mt-10 flex flex-row border-4 p-5 bg-blue-300 ">
+                    <section class="mt-10 mb-5 flex flex-row border-4 p-5 bg-blue-300 rounded-lg">
                         <article class="flex flex-col gap-5 items-center pr-16 border-r-2">
                             <?php foreach ($users as $user) {
                                 if ($post["author"] == $user["id_user"]) { ?>
@@ -83,7 +85,7 @@ if(isset($_POST["envoi_reponse"])) {
             <section>
                 <?php foreach($answers as $answer) {
                     if($answer["post_id"] == $id) { ?>
-                        <section class="mt-10 flex flex-row border-4 p-5 bg-blue-200 ">
+                        <section class=" flex flex-row border-4 p-5 rounded-lg mb-2 ">
                             <article class="flex flex-col gap-5 items-center pr-16 border-r-2">
                             <?php foreach ($users as $user) {
                                     if ($answer["author"] == $user["id_user"]) { ?>
@@ -98,7 +100,12 @@ if(isset($_POST["envoi_reponse"])) {
                                     <p><?php echo $answer['text'] ?> </p>
                                 </div>
                             </article>
-                        <?php } ?>
+                            <?php if ($_SESSION["user"]["id_user"] == $answer["author"]) { ?>
+                            <form  action="correction.php" method="get">
+                                <button class="border-2 border-black bg-orange-500 h-fit text-white" type="submit" name="correction" value = <?php echo $answer['id_response'] ?> >Modifier</button>
+                            </form> 
+                            <?php };
+                        } ?>
                     </section>
                     <?php
                 }

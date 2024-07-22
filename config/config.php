@@ -141,4 +141,33 @@ class bdd
         $exe = $this->bdd->prepare($sql);
         $exe->execute();
     }
+
+    public function deleteResponse($id) {
+        $sql = $this->bdd->prepare("DELETE FROM response WHERE id_response = :id");
+
+        $sql->bindParam(":id", $id);
+        $sql->execute();
+    }
+
+    public function deletePost($id) {
+        $sql = $this->bdd->prepare("DELETE FROM posts WHERE id_posts = :id");
+
+        $sql->bindParam(":id", $id);
+        $sql->execute();
+    }
+
+    public function deleteUser($id) {
+        $sql = $this->bdd->prepare("DELETE FROM users WHERE id_user = :id");
+
+        $sql->bindParam(":id", $id);
+        $sql->execute();
+    }
+
+    public function modifRep($param = []) {
+        $sql = $this->bdd->prepare("UPDATE response (text) VALUES (:text) WHERE id_response = :id");
+
+        $sql->bindParam(":text", $param["text"]);
+        $sql->execute();
+
+    }
 }

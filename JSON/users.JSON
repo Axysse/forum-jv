@@ -1,0 +1,5 @@
+[{"id_user":1,"pseudo":"test","password":"$argon2id$v=19$m=65536,t=4,p=1$YkJGYmJZSXB0alRBYy5rZA$Y+4cSj0J1LhDV6\/s4z1QVLOSs8CWHhDgRFmBdc2B0LQ","mail":"test.test@test.fr","avatar":null,"admin":0},
+{"id_user":5,"pseudo":"Lord_Vador_xoxo","password":"$argon2id$v=19$m=65536,t=4,p=1$MDJENjF0aVZPNWFlY0wwRA$gP34Xk8IGPjLWeu9of3rE+Kl3Lhg9ytmHPQFnz3JMJg","mail":"dark.side@empire.net","avatar":".\/ressources\/uploads\/dark.jpg","admin":null},
+{"id_user":7,"pseudo":"ptit_soumis","password":"$argon2id$v=19$m=65536,t=4,p=1$UXFVUDQ4OU9VT1NRbDBwdw$dQ7epbLCagJgJJ\/tgRZzqie8kw4CkkIumuYN3DzoE4g","mail":"soumission.oui@g-mal.com","avatar":".\/ressources\/uploads\/fan.jpg","admin":null},
+{"id_user":8,"pseudo":"admin","password":"$argon2id$v=19$m=65536,t=4,p=1$YWFYR3F0ckVON1ZxQS83aQ$7Vod5QsbSWuUfOtuazaslB68uaSrynmtMzj3FRm8ojU","mail":"admin.admin@admin.admin","avatar":".\/ressources\/uploads\/hartman.jpg","admin":1}
+]  

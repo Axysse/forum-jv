@@ -4,11 +4,11 @@ class Categories {
 
     private $categorie;
 
-    public function setCategorie($categorie) {
+    public function setsCategorie($categorie) {
         $this->categorie = $categorie;
     }
 
-    public function getCategorie(): string
+    public function getsCategorie(): string
     {
         return $this->categorie;
     }
