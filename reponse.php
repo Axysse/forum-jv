@@ -14,19 +14,26 @@ $answers = $bdd->gatAllAnswer();
 
 $id = $_GET['response'];
 
+// var_dump($id);
 
-var_dump($id);
+$arianne = $bdd->filArianne();
 
 
-// var_dump($_GET);
+// ?>
+<pre> <?php
+// var_dump($arianne);
+// ?> </pre>
+<?php
 
-if(isset($_POST["envoi_reponse"])) {
+
+
+if (isset($_POST["envoi_reponse"])) {
     $author = $_SESSION["user"]["id_user"];
     $text = $_POST["post"];
     $date = $time;
     $post_id = $id;
 
-    $newRep= new Answer;
+    $newRep = new Answer;
     $newRep->setAuthor($author);
     $newRep->setText($text);
     $newRep->setDate($date);
@@ -34,7 +41,10 @@ if(isset($_POST["envoi_reponse"])) {
 
     $bdd->addRep($newRep);
     header("Refresh:0");
+}
 
+if(isset($_POST["report"])) {
+    
 }
 ?>
 
@@ -55,6 +65,15 @@ if(isset($_POST["envoi_reponse"])) {
     </header>
 
     <main class="px-5 pt-10">
+        <section class="border-b-2 w-fit">
+            <?php foreach ($arianne as $ariannes) {
+                if ($ariannes["id_posts"] == $id) { ?>
+                    <p><?php print $ariannes["nom"]; ?> / <?php print $ariannes["name"]; ?> / <?php print $ariannes["titre"]; ?>
+                    </p>
+                <?php }
+            }
+            ?>
+        </section>
         <section>
             <?php foreach ($posts as $post) {
                 if ($post["id_posts"] == $id) { ?>
@@ -83,11 +102,11 @@ if(isset($_POST["envoi_reponse"])) {
             ?>
 
             <section>
-                <?php foreach($answers as $answer) {
-                    if($answer["post_id"] == $id) { ?>
+                <?php foreach ($answers as $answer) {
+                    if ($answer["post_id"] == $id) { ?>
                         <section class=" flex flex-row border-4 p-5 rounded-lg mb-2 ">
                             <article class="flex flex-col gap-5 items-center pr-16 border-r-2">
-                            <?php foreach ($users as $user) {
+                                <?php foreach ($users as $user) {
                                     if ($answer["author"] == $user["id_user"]) { ?>
                                         <img class="h-24 w-32" src="<?php echo $user["avatar"] ?>">
                                         <p><?php echo $user["pseudo"] ?></p>
@@ -101,15 +120,21 @@ if(isset($_POST["envoi_reponse"])) {
                                 </div>
                             </article>
                             <?php if ($_SESSION["user"]["id_user"] == $answer["author"]) { ?>
-                            <form  action="correction.php" method="get">
-                                <button class="border-2 border-black bg-orange-500 h-fit text-white" type="submit" name="correction" value = <?php echo $answer['id_response'] ?> >Modifier</button>
-                            </form> 
-                            <?php };
-                        } ?>
+                                <div class="flex flex-col justify-between">
+                                    <form action="correction.php" method="get">
+                                        <button class="border-2 border-black bg-orange-500 h-fit text-white" type="submit"
+                                            name="correction" value=<?php echo $answer['id_response'] ?>>Modifier</button>
+                                    </form>
+                                    <?php } ?>
+                                    <form action="" method="post">
+                                        <button class="border-2 border-black bg-orange-500 h-fit text-white" name="report" value="<?php echo $answer['id_response'] ?>">REPORT</button>
+                                    </form>
+                                </div>
+                  <?php  } ?>
                     </section>
                     <?php
                 }
-            ?>
+                ?>
             </section>
         </section>
         <?php if (isset($_SESSION["user"]) && (isset($id))) { ?>

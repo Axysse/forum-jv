@@ -4,25 +4,17 @@ session_start();
 $bdd = new Bdd();
 $bdd->connect();
 
-
 $time = date('d/m/Y h:i:s');
-$id = $_GET['id'];
-// $idP = $_GET['idP'];
 
+if(isset($_GET['id'])){
+    $id = $_GET['id'];
+} 
 
-// var_dump($id);
 $posts = $bdd->getAllPosts();
-// var_dump($posts);
-// var_dump($_SESSION["user"]["id_user"]);
-
 $users = $bdd->getAllUsers();
 $categorie = $bdd->getAllCategorie();
 $sousCategorie = $bdd->getAllSousCategorie();
 $posts = $bdd->getAllPosts();
-
-// var_dump($categorie);
-// var_dump($sousCategorie);
-
 
 if (isset($_POST["submit_inscr"])) {
     $pseudo = htmlspecialchars(stripcslashes(trim($_POST["pseudo_inscr"])));
@@ -78,6 +70,24 @@ if (isset($_POST["envoi_post"])) {
 
     $bdd->addPost($newPost);
     header("location:index.php");
+}
+
+if (isset($_POST["delete_sous_cat"])) {
+    foreach ($sousCategorie as $sousCategories) {
+        if ($_POST["delete_sous_cat"] == $sousCategories["id_souscategorie"]) {
+            $bdd->deleteSousCat($sousCategories["id_souscategorie"]);
+            header("Location: index.php");
+        }
+    }
+}
+
+if (isset($_POST["delete_cat"])) {
+    foreach ($categorie as $categories) {
+        if ($_POST["delete_cat"] == $categories["id_categorie"]) {
+            $bdd->deleteCat($categories["id_categorie"]);
+            header("Location: index.php");
+        }
+    }
 }
 
 // var_dump($_SESSION);
@@ -152,10 +162,17 @@ if (isset($_POST["envoi_post"])) {
                 </article>
             </section>
         <?php } ?>
+        <?php if(isset($_SESSION["user"])) { ?>
         <section class="flex flex-col justify-center items-center items-center">
             <?php foreach ($categorie as $catégories) { ?>
-                <article class="w-[75%] bg-blue-400 px-1 pl-5 py-1 border-b-2 border-gray-400">
+                <article class="w-[75%] bg-blue-400 px-1 pl-5 py-1 border-b-2 border-gray-400 flex flex-row justify-between">
                     <?php print $catégories["nom"]; ?>
+                    <?php if ($_SESSION["user"]["admin"] == 1) { ?>
+                        <form action="" method="post">
+                            <button class="border-2 border-black bg-orange-500 h-fit text-white mr-8" name="delete_cat"
+                                value="<?php echo $catégories["id_categorie"] ?>">DELETE</button>
+                        </form>
+                    <?php } ?>
                 </article>
                 <?php foreach ($sousCategorie as $sousCategories) {
                     if ($sousCategories["categorie_id"] == $catégories["id_categorie"]) { ?>
@@ -173,6 +190,12 @@ if (isset($_POST["envoi_post"])) {
                                 </svg>
                                 <!-- nbr posts -->
                                 <p>272 500 831</p>
+                                <?php if ($_SESSION["user"]["admin"] == 1) { ?>
+                                    <form action="" method="post">
+                                        <button class="border-2 border-black bg-orange-500 h-fit text-white" name="delete_sous_cat"
+                                            value="<?php echo $sousCategories["id_souscategorie"] ?>">DELETE</button>
+                                    </form>
+                                <?php } ?>
                             </div>
                         </article>
                     <?php }
@@ -201,8 +224,9 @@ if (isset($_POST["envoi_post"])) {
                                     <p><?php echo $post['text'] ?> </p>
                                 </div>
                             </article>
-                            <form  action="reponse.php" method="get">
-                                <button class="border-2 border-black bg-orange-500 h-fit text-white" type="submit" name="response" value = <?php echo $post['id_posts'] ?> >Répondre</button>
+                            <form action="reponse.php" method="get">
+                                <button class="border-2 border-black bg-orange-500 h-fit text-white" type="submit" name="response"
+                                    value=<?php echo $post['id_posts'] ?>>Répondre</button>
                             </form>
                         <?php } ?>
                     </section>
@@ -210,9 +234,9 @@ if (isset($_POST["envoi_post"])) {
                 }
             }
             ?>
-                <?php if(isset($idP)){
-                    var_dump($idP);
-                    }?>
+            <?php if (isset($idP)) {
+                var_dump($idP);
+            } ?>
         </section>
         <?php if (isset($_SESSION["user"]) && (isset($id))) { ?>
             <section class="flex flex-col justify-center items-center py-5">
@@ -228,6 +252,7 @@ if (isset($_POST["envoi_post"])) {
                 </form>
             </section>
         <?php } ?>
+        <?php } ?>
     </main>
     <footer class="flex flex-row justify-between items-center border-t-2 border-b-2 px-5 mt-10">
         <?php include ("content/footer.html"); ?>
@@ -235,9 +260,3 @@ if (isset($_POST["envoi_post"])) {
 </body>
 
 </html>
-
-
-
-
-
-<!-- ?php echo $sousCategories["name"]?>.php"> -->

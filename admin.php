@@ -51,6 +51,30 @@ if(isset($_GET["delete_user"])) {
         }
     }
 }
+
+if(isset($_POST["envoi_cat"])) {
+$titre = $_POST["cat"];
+
+$newCat = new Categories;
+$newCat-> setsCategorie($titre);
+$bdd-> addCat($newCat);
+header("Location: admin.php");
+}
+
+if(isset($_POST["envoi_sous_cat"])) {
+    foreach($categorie as $categories) {
+        if($_POST["categorie"] == $categories["nom"]) {
+            $titre = $_POST["sous_cat"];
+            $categorieID = $categories["id_categorie"];
+
+            $newSousCat = new SousCategories;
+            $newSousCat-> setCategorie($titre);
+            $newSousCat-> setCategorieId($categorieID);
+            $bdd-> addSousCat($newSousCat);
+            header("Location: admin.php");
+        }
+    }  
+}
 ?>
 
 
@@ -158,6 +182,33 @@ if(isset($_GET["delete_user"])) {
                 </table>
             </article>
         </section>
+        <section class="flex flex-row gap-5 justify-center">
+        <article class="flex flex-col justify-center items-center py-5 w-[45%]">
+                <h3 class="mb-5">Nouvelle catégorie:</h3>
+                <form action="" method="post" class="flex flex-col justify-between">
+                    <div class="flex flex-col just ify-center items-center">
+                        <label for="post">Nom de la catégorie:</label>
+                        <textarea class="border-2 border-black"  name="cat" rows="5" cols="70"></textarea>
+                    </div>
+                    <button class="border-2 border-black bg-gray-300" type="submit" name="envoi_cat">Envoyer</button>
+                </form>
+            </article>
+            <article class="flex flex-col justify-center items-center py-5 w-[45%]">
+                <h3 class="mb-5">Nouvelle sous-catégorie:</h3>
+                <form action="" method="post" class="flex flex-col justify-between">
+                    <div class="flex flex-col justify-center items-center">
+                        <label for="post">Nom de la sous-catégorie:</label>
+                        <textarea class="border-2 border-black"  name="sous_cat" rows="5" cols="70"></textarea>
+                    </div>
+                    <select name="categorie">
+                        <?php foreach($categorie as $categories) { ?>
+                            <option><?php echo $categories["nom"] ?></option>
+                      <?php  } ?>
+                    </select>
+                    <button class="border-2 border-black bg-gray-300" type="submit" name="envoi_sous_cat">Envoyer</button>
+                </form>
+            </article>
+            </section>
         <script src="JS/admin.js"></script>
     </main>
     <footer class="flex flex-row justify-between items-center border-t-2 border-b-2 px-5 mt-10">

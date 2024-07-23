@@ -14,13 +14,15 @@ $answers = $bdd->gatAllAnswer();
 
 $id = $_GET['correction'];
 
-var_dump($_POST["post"]);
-
 if(isset($_POST["envoi_correction"])) {
-    $newText = $_POST["post"];
+    $text = $_POST["poste"];
+    $answerId = $id;
+
+   $bdd->modifRep(["text" => $text, "id_response" => $answerId]);
+   header("Location: index.php");
 };
 
-var_dump($id);
+
 
 ?>
 
@@ -64,9 +66,9 @@ var_dump($id);
                 <article>
                 <form action="" method="post" class="flex flex-col justify-between">
                     <label for="post">Ecris ton mea-culpa (positivité uniquement):</label>
-                    <textarea class="border-2 border-black" id="post" name="post" rows="5" cols="90"></textarea>
+                    <textarea class="border-2 border-black" id="poste" name="poste" rows="5" cols="90"></textarea>
                     </div>
-                    <button class="border-2 border-black bg-gray-300" type="submit" name="envoi_correction" value="post">Envoyer</button>
+                    <button class="border-2 border-black bg-gray-300" type="submit" name="envoi_correction" value="poste">Envoyer</button>
                 </form>
                 </article>
             </section>

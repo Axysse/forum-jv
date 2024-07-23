@@ -4,6 +4,8 @@ class SousCategories {
 
     private $sousCategorie;
 
+    private $sousCategorieId;
+
     public function setCategorie($sousCategorie) {
         $this->sousCategorie = $sousCategorie;
     }
@@ -11,5 +13,14 @@ class SousCategories {
     public function getCategorie(): string
     {
         return $this->sousCategorie;
+    }
+
+    public function setCategorieId($sousCategorieId) {
+        $this->sousCategorieId = $sousCategorieId;
+    }
+
+    public function getCategorieId(): string
+    {
+        return $this->sousCategorieId;
     }
 }

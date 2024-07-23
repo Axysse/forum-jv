@@ -132,6 +132,24 @@ class bdd
         $sql->execute();
     }
 
+    public function addCat (Categories $categorie) {
+        $titre = $categorie->getsCategorie();
+
+        $sql = $this->bdd->prepare("INSERT INTO catégorie (nom) VALUES (:nom)");
+        $sql->bindParam(":nom", $titre);
+        $sql->execute();
+    }
+
+    public function addSousCat (SousCategories $sousCategorie) {
+        $titre = $sousCategorie->getCategorie();
+        $idCat = $sousCategorie->getCategorieId();
+
+        $sql = $this->bdd->prepare("INSERT INTO sous_categorie (categorie_id, name) VALUES (:categorie_id, :name)");
+        $sql->bindParam(":categorie_id", $idCat);
+        $sql->bindParam(":name", $titre);
+        $sql->execute(); 
+    }
+
     public function insert($image) {
 
         $id = $_SESSION["user"]["id_user"];
@@ -163,11 +181,33 @@ class bdd
         $sql->execute();
     }
 
+    public function deleteSousCat($id) {
+        $sql = $this->bdd->prepare("DELETE FROM sous_categorie WHERE id_souscategorie = :id");
+
+        $sql->bindParam(":id",$id );
+        $sql->execute();
+    }
+
+    public function deleteCat($id) {
+        $sql = $this->bdd->prepare("DELETE FROM catégorie WHERE id_categorie = :id");
+
+        $sql->bindParam(":id",$id );
+        $sql->execute();
+    }
+
     public function modifRep($param = []) {
-        $sql = $this->bdd->prepare("UPDATE response (text) VALUES (:text) WHERE id_response = :id");
+        $sql = $this->bdd->prepare("UPDATE response  SET text = :text WHERE id_response = :id");
 
         $sql->bindParam(":text", $param["text"]);
+        $sql->bindParam(":id", $param["id_response"]);
         $sql->execute();
+    }
 
+    public function filArianne() {
+        $sql = "SELECT * FROM sous_categorie  JOIN catégorie ON sous_categorie.categorie_id = catégorie.id_categorie
+                                            JOIN posts ON sous_categorie.id_souscategorie = posts.souscategorie_id";
+
+        $done = $this->bdd->query($sql);
+        return $done->fetchAll();
     }
 }
