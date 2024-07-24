@@ -6,6 +6,7 @@ include ("posts.php");
 include ("categorie.php");
 include ("sous_categorie.php");
 include ("answer.php");
+include ("report.php");
 
 class bdd
 {
@@ -66,6 +67,13 @@ class bdd
         $sql = "SELECT * FROM response";
         $done = $this->bdd->query($sql);
         return $done->fetchAll(PDO::FETCH_ASSOC); 
+    }
+
+    public function getAllReport()
+    {
+        $sql = "SELECT * FROM signalement";
+        $done = $this->bdd->query($sql);
+        return $done->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function addUser(Users $user): void
@@ -132,6 +140,13 @@ class bdd
         $sql->execute();
     }
 
+    public function addLike($id) {
+        $sql = $this->bdd->prepare("UPDATE posts SET `like` = `like` + 1 WHERE id_posts = :id");
+
+        $sql->bindParam(":id", $id);
+        $sql->execute();
+    }
+
     public function addCat (Categories $categorie) {
         $titre = $categorie->getsCategorie();
 
@@ -195,6 +210,13 @@ class bdd
         $sql->execute();
     }
 
+    public function deleteReport($id) {
+        $sql = $this->bdd->prepare("DELETE from signalement WHERE id_signal = :id");
+
+        $sql->bindParam(":id", $id);
+        $sql->execute();
+    }
+
     public function modifRep($param = []) {
         $sql = $this->bdd->prepare("UPDATE response  SET text = :text WHERE id_response = :id");
 
@@ -209,5 +231,41 @@ class bdd
 
         $done = $this->bdd->query($sql);
         return $done->fetchAll();
+    }
+
+    public function countPosts($id) {
+        $sql = "SELECT COUNT(*) FROM `posts` WHERE `souscategorie_id` = $id"; 
+
+        $done = $this->bdd->query($sql);
+        return $done->fetchAll();
+    }
+
+    // public function getAnswerId(Answer $id) {
+
+    //     $nid = $id->getId();
+
+    //     $sql = $this->bdd->prepare("SELECT * FROM response JOIN users ON response.author = users.id_user WHERE id_response = :id");
+
+    //     $sql->bindParam(":id", $nid);
+
+    //     $done = $this->bdd->query($sql);
+    //     return $done->fetchAll();
+    // }
+
+    public function AddReport(Report $report){
+        $author = $report->getAuthor();
+        $text = $report->getText();
+        $signal_post_id = $report->getSignalPostId();
+        $signal_response_id = $report->getSignalResponseId();
+        $report_status = $report->getReportStatus();
+
+        $sql = $this->bdd->prepare("INSERT INTO signalement (author, text, signal_post_id, signal_response_id, report_status) VALUES (:author, :text, :signal_post_id, :signal_response_id, :report_status)");
+
+        $sql->bindParam(":author", $author);
+        $sql->bindParam(":text", $text);
+        $sql->bindParam(":signal_post_id", $signal_post_id);
+        $sql->bindParam(":signal_response_id", $signal_response_id);
+        $sql->bindParam(":report_status", $report_status);
+        $sql->execute();
     }
 }

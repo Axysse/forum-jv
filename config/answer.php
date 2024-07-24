@@ -10,6 +10,8 @@ class Answer {
 
     private $post_id;
 
+    private $id;
+
     public function setAuthor($author) {
         $this->author = $author;
     }
@@ -40,4 +42,14 @@ class Answer {
     public function getPostId() {
         return $this->post_id;
     }
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+
 }

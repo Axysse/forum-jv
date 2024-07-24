@@ -14,15 +14,6 @@ $sousCategorie = $bdd->getAllSousCategorie();
 $posts = $bdd->getAllPosts();
 $answers = $bdd->gatAllAnswer();
 
-
-
-?><pre><?php
-// print_r($answers);
-?></pre>
-<?php
-
-$userjson = json_encode($users);
-
 if(isset($_GET["delete_response"])) {
     foreach($answers as $answer) {
         if($_GET["delete_response"] == $answer["id_response"]) {
@@ -88,12 +79,14 @@ if(isset($_POST["envoi_sous_cat"])) {
     <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
 </head>
+
 <body>
 <header class="flex flex-row justify-between items-center border-b-2 shadow-lg">
         <?php include ("content/navbar.php"); ?>
     </header>
     <main class="px-5">
         <h1 class="flex pt-5 justify-center">Loué soit le grand admin (on vous attendait pour le sacrifice humain)!</h1>
+        <a class="flex pt-2 justify-center text-red-400" href="report.php">Les signalements! (les vilains garnements)</a>
         <section class="pt-5 border-b-2 shadow-md pb-5 flex flex-row justify-around">
             <article>
                 <button id="clk">Users</button>
